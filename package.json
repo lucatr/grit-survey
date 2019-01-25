@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --mode production",
-    "dev": "webpack-dev-server -d --host 192.168.8.104"
+    "dev": "webpack-dev-server -d"
   },
   "keywords": [],
   "author": "",
@@ -31,9 +31,11 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "chart.js": "^2.7.3",
     "evergreen-ui": "^4.7.1",
     "firebase": "^5.5.5",
     "firebase-app": "0.0.1",
-    "firestore": "^1.1.6"
+    "firestore": "^1.1.6",
+    "react-chartkick": "^0.3.0"
   }
 }
