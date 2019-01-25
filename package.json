@@ -31,6 +31,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "evergreen-ui": "^4.7.1"
+    "evergreen-ui": "^4.7.1",
+    "firebase": "^5.5.5",
+    "firebase-app": "0.0.1",
+    "firestore": "^1.1.6"
   }
 }

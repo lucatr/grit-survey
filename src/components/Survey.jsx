@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
 import { Heading, Pane, Button, Checkbox } from 'evergreen-ui';
 import Config from '../Config';
+import db from '../db';
 import './survey.css';
 
 export default class Survey extends React.Component {
@@ -15,6 +15,7 @@ export default class Survey extends React.Component {
     const newState = {};
     Config.options.forEach(o => newState[o.id] = false);
     newState.isConfirmShown = false;
+    newState.confirmMsg = 'Danke für deine Stimme.';
     return newState;
   }
 
@@ -22,27 +23,21 @@ export default class Survey extends React.Component {
     event.preventDefault();
     this.setState({ isConfirmShown: true });
 
-    window.setTimeout(() => this.setState(this.getInitState), 5000);
+    let data = { ...this.state };
+    delete data.isConfirmShown;
+    delete data.confirmMsg;
+    data.surveyId = 'web';
 
-    // const url = 'dummy';
-    // const data = JSON.stringify({text: `${this.state.name} (${this.state.email}), ${'dummy'}:\n${this.state.message}`});
-    // axios.post(url, data)
-    // .then(() => {
-    //   // handle success
-    //   this.setState({
-    //     name: '',
-    //     email: '',
-    //     message: '',
-    //     validName: null,
-    //     validEmail: null,
-    //     validMessage: null,
-    //   });
-    //   toaster.success('Cool, es freut uns dich an Bord zu haben! Wir melden uns bei dir.');
-    // })
-    // .catch((error) => {
-    //   // handle error
-    //   toaster.danger('Das hat leider nicht geklappt. Versuch\'s doch bitte nochmal, oder kontaktiere uns via E-Mail: info@grit.rocks');
-    // });
+    db.collection("survey").add({ data })
+    .then((docRef) => {
+      if (docRef) {
+        window.setTimeout(() => this.setState(this.getInitState), 5000);
+      }
+    })
+    .catch((error) => {
+      this.setState(() => this.setState({ confirmMsg: `¡Ay, caramba! - ${error}` }))
+    });
+
   };
 
   render() {
@@ -103,7 +98,7 @@ export default class Survey extends React.Component {
                   size={900}
                   fontSize={52}
                 >
-                  Danke für deine Stimme.
+                  { this.state.confirmMsg }
                 </Heading>
                 <div id='logo'></div>
               </div>
